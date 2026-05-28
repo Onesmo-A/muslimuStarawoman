@@ -1,0 +1,145 @@
+{
+  "info": {
+    "name": "Business Awards Platform API",
+    "description": "Postman collection for Laravel 12 API v1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000/api/v1" },
+    { "key": "token", "value": "" },
+    { "key": "nomination_id", "value": "1" },
+    { "key": "season_id", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"API User\",\n  \"email\": \"api.user@example.test\",\n  \"password\": \"password\",\n  \"password_confirmation\": \"password\"\n}"
+            },
+            "url": "{{base_url}}/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"superadmin@bizawards.test\",\n  \"password\": \"password\"\n}"
+            },
+            "url": "{{base_url}}/auth/login"
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/auth/me"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Nominations",
+      "item": [
+        {
+          "name": "Create Nomination",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"award_category_id\": 1,\n  \"form_payload\": {\"business_summary\": \"Demo\"}\n}"
+            },
+            "url": "{{base_url}}/nominations"
+          }
+        },
+        {
+          "name": "Submit Nomination",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/nominations/{{nomination_id}}/submit"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Initiate Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payable_type\": \"App\\\\Models\\\\Nomination\",\n  \"payable_id\": 1,\n  \"provider\": \"stripe\",\n  \"amount\": 50,\n  \"currency\": \"USD\"\n}"
+            },
+            "url": "{{base_url}}/payments/initiate"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Voting",
+      "item": [
+        {
+          "name": "Cast Vote",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"award_category_id\": 1,\n  \"nominee_id\": 1,\n  \"captcha_token\": \"captcha-demo\",\n  \"device_fingerprint\": \"browser-fp-123\"\n}"
+            },
+            "url": "{{base_url}}/voting/cast"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{base_url}}/admin/dashboard"
+          }
+        },
+        {
+          "name": "Publish Winner",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"award_season_id\": 1,\n  \"award_category_id\": 1,\n  \"nominee_id\": 1,\n  \"position\": \"winner\",\n  \"hall_of_fame\": true\n}"
+            },
+            "url": "{{base_url}}/admin/winners/publish"
+          }
+        }
+      ]
+    }
+  ]
+}
