@@ -30,6 +30,11 @@ class Nomination extends Model
         return $this->belongsTo(AwardCategory::class, 'award_category_id');
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function nominee(): BelongsTo
     {
         return $this->belongsTo(Nominee::class);

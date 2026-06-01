@@ -37,6 +37,11 @@ class AwardCategory extends Model
     {
         return $this->hasMany(Nomination::class);
     }
+
+    public function nominees(): HasMany
+    {
+        return $this->hasMany(Nominee::class);
+    }
 }
 
 

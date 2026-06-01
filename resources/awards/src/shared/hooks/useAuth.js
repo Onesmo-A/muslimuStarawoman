@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
 import { useMeQuery } from '../../services/api/authApi';
-import { getStoredUser, saveAuth } from '../auth';
+import { clearAuth, getStoredUser, getToken, saveAuth } from '../auth';
 
 export function useAuth() {
+    const token = getToken();
     const storedUser = getStoredUser();
-    const { data, isLoading } = useMeQuery(undefined, { skip: !storedUser });
+    const { data, error, isLoading } = useMeQuery(undefined, {
+        skip: !token,
+        refetchOnMountOrArgChange: true,
+    });
 
     useEffect(() => {
         if (data?.data) {
@@ -12,7 +16,13 @@ export function useAuth() {
         }
     }, [data]);
 
-    const user = data?.data ?? storedUser;
+    useEffect(() => {
+        if (error?.status === 401) {
+            clearAuth();
+        }
+    }, [error]);
+
+    const user = token ? data?.data ?? storedUser : null;
 
     return {
         user,

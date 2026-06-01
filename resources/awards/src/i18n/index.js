@@ -1,5 +1,5 @@
 export const messages = {
     en: {
-        welcome: 'Welcome to Business Awards Platform',
+        welcome: 'Welcome to Muslim Stara Women Awards',
     },
 };

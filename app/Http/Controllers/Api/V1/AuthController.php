@@ -36,6 +36,18 @@ class AuthController extends BaseApiController
         return $this->successResponse(message: 'Logout successful');
     }
 
+    public function changePassword(Request $request)
+    {
+        $payload = $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        $this->authService->changePassword($request->user(), $payload);
+
+        return $this->successResponse(message: 'Password changed successfully');
+    }
+
     public function me(Request $request)
     {
         $user = $request->user();

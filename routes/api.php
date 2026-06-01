@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Admin\DashboardController;
+use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Admin\NomineeController;
+use App\Http\Controllers\Api\V1\Admin\NominationController as AdminNominationController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\InvitationController;
@@ -25,6 +28,7 @@ Route::prefix('v1')->group(function () {
 
         Route::middleware('auth:sanctum')->group(function () {
             Route::get('me', [AuthController::class, 'me']);
+            Route::post('change-password', [AuthController::class, 'changePassword']);
             Route::post('logout', [AuthController::class, 'logout']);
         });
     });
@@ -78,9 +82,22 @@ Route::prefix('v1')->group(function () {
             Route::put('admin/events/{id}', [EventController::class, 'update']);
         });
 
+        Route::middleware('permission:manage_categories')->group(function () {
+            Route::apiResource('admin/categories', CategoryController::class);
+        });
+
+        Route::middleware('permission:manage_nominees')->group(function () {
+            Route::get('admin/nominees/export', [ReportController::class, 'export']);
+            Route::apiResource('admin/nominees', NomineeController::class);
+        });
+
         Route::middleware('permission:manage_nominations')->group(function () {
             Route::post('admin/invitations', [InvitationController::class, 'create']);
             Route::post('admin/invitations/send', [InvitationController::class, 'send']);
+            Route::get('admin/nominations', [AdminNominationController::class, 'index']);
+            Route::get('admin/nominations/{nomination}', [AdminNominationController::class, 'show']);
+            Route::post('admin/nominations/{nomination}/review', [AdminNominationController::class, 'review']);
+            Route::delete('admin/nominations/{nomination}', [AdminNominationController::class, 'destroy']);
         });
 
         Route::middleware('permission:manage_reports')->group(function () {

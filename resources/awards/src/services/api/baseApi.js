@@ -17,6 +17,6 @@ export const baseApi = createApi({
             return headers;
         },
     }),
-    tagTypes: ['Dashboard', 'Nominations', 'Events', 'Categories', 'Winners', 'Tickets'],
+    tagTypes: ['Dashboard', 'Nominations', 'Events', 'Categories', 'Nominees', 'Winners', 'Tickets'],
     endpoints: () => ({}),
 });

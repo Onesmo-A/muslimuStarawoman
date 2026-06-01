@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Winner;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Schema;
 
 class WinnerRepository
 {
@@ -20,6 +22,10 @@ class WinnerRepository
 
     public function bySeason(int $seasonId)
     {
+        if (! Schema::hasTable('winners')) {
+            return new Collection();
+        }
+
         return Winner::query()
             ->where('award_season_id', $seasonId)
             ->where('is_published', true)

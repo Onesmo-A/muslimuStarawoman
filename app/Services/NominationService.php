@@ -18,6 +18,14 @@ class NominationService
     public function createDraft(int $userId, array $payload): Nomination
     {
         $reference = 'NOM-'.strtoupper(Str::random(10));
+        $pricing = CategoryPricing::query()->where('award_category_id', $payload['award_category_id'])->first();
+        $status = 'draft';
+        $submittedAt = null;
+
+        if (! $pricing || $pricing->form_type !== 'paid') {
+            $status = 'submitted';
+            $submittedAt = now();
+        }
 
         return $this->repository->create([
             'user_id' => $userId,
@@ -25,7 +33,8 @@ class NominationService
             'nominee_id' => $payload['nominee_id'] ?? null,
             'reference' => $reference,
             'form_payload' => $payload['form_payload'] ?? null,
-            'status' => 'draft',
+            'status' => $status,
+            'submitted_at' => $submittedAt,
         ]);
     }
 

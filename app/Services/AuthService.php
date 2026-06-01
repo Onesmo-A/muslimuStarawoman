@@ -51,6 +51,19 @@ class AuthService
         $user->currentAccessToken()?->delete();
     }
 
+    public function changePassword(User $user, array $payload): void
+    {
+        if (! Hash::check($payload['current_password'], $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['The current password is incorrect.'],
+            ]);
+        }
+
+        $user->forceFill([
+            'password' => Hash::make($payload['password']),
+        ])->save();
+    }
+
     public function forgotPassword(string $email): string
     {
         $status = Password::sendResetLink(['email' => $email]);

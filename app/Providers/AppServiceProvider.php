@@ -24,8 +24,12 @@ class AppServiceProvider extends ServiceProvider
     {
         RateLimiter::for('vote-cast', function (Request $request) {
             return [
-                Limit::perMinute(30)->by((string) $request->ip()),
-                Limit::perMinute(10)->by((string) optional($request->user())->id),
+                Limit::perMinute(30)->by((string) $request->ip())->response(function (Request $request, array $headers) {
+                    return response()->json(['status' => 'error', 'message' => 'Network busy, try again later'], 429, $headers);
+                }),
+                Limit::perMinute(10)->by((string) optional($request->user())->id)->response(function (Request $request, array $headers) {
+                    return response()->json(['status' => 'error', 'message' => 'Network busy, try again later'], 429, $headers);
+                }),
             ];
         });
     }

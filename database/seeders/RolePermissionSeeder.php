@@ -34,10 +34,10 @@ class RolePermissionSeeder extends Seeder
 
         $superAdmin = Role::findOrCreate('super_admin', 'web');
         $admin = Role::findOrCreate('admin', 'web');
-        Role::findOrCreate('judge', 'web');
+        $judge = Role::findOrCreate('judge', 'web');
         Role::findOrCreate('nominee', 'web');
         Role::findOrCreate('public_user', 'web');
-        Role::findOrCreate('sponsor', 'web');
+        $sponsor = Role::findOrCreate('sponsor', 'web');
 
         $superAdmin->syncPermissions($permissions);
         $admin->syncPermissions([
@@ -55,5 +55,11 @@ class RolePermissionSeeder extends Seeder
             'manage_content',
             'manage_reports',
         ]);
+
+        $judge->syncPermissions([
+            'manage_scores',
+        ]);
+
+        $sponsor->syncPermissions([]);
     }
 }

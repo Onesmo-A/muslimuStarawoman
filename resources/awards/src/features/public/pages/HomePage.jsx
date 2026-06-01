@@ -1,437 +1,371 @@
-import React, { useState, useEffect } from 'react';
-import PageLoader from '../../../shared/components/PageLoader';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import PageLoader from '../../../shared/components/PageLoader';
+import heroOne from '../../../assets/image1.png';
+import aboutImage from '../../../assets/imag2.png';
+import categoriesImage from '../../../assets/imag3.png';
+import eventImage from '../../../assets/ima4.png';
+import momentsImage from '../../../assets/imag5.png';
+import footerImage from '../../../assets/imag6.png';
+
+const ownerPhone = '+255652724557';
+const whatsappOwner = `https://wa.me/${ownerPhone.replace(/\D/g, '')}`;
+
+const categories = [
+    {
+        icon: 'fa-star-half-stroke',
+        title: 'Leadership Excellence',
+        body: 'Celebrating women who lead with vision and positive community impact.',
+    },
+    {
+        icon: 'fa-briefcase',
+        title: 'Entrepreneurship Award',
+        body: 'Honoring business growth, innovation, and inspiring enterprise.',
+    },
+    {
+        icon: 'fa-people-group',
+        title: 'Community Impact',
+        body: 'Recognizing service that creates meaningful change for others.',
+    },
+    {
+        icon: 'fa-book-open-reader',
+        title: 'Education Excellence',
+        body: 'Celebrating education, mentorship, and confidence-building work.',
+    },
+    {
+        icon: 'fa-palette',
+        title: 'Creativity & Culture',
+        body: 'Showcasing talent across arts, media, culture, and creativity.',
+    },
+    {
+        icon: 'fa-trophy',
+        title: 'Young Achiever Award',
+        body: 'For young women making bold progress early in their journey.',
+    },
+];
+
+const impactPillars = [
+    {
+        icon: 'fa-award',
+        title: 'Recognize Excellence',
+        body: 'Celebrating achievement and community contribution.',
+    },
+    {
+        icon: 'fa-user-astronaut',
+        title: 'Inspire Generations',
+        body: 'Inspiring Muslim women to rise with confidence.',
+    },
+    {
+        icon: 'fa-hands-holding-circle',
+        title: 'Build Community',
+        body: 'Creating room for networks and collaboration.',
+    },
+    {
+        icon: 'fa-lightbulb',
+        title: 'Create Impact',
+        body: 'Supporting women with bold ideas and purpose.',
+    },
+];
+
+const gallery = [
+    { image: momentsImage, position: '50% 18%' },
+    { image: momentsImage, position: '50% 35%' },
+    { image: momentsImage, position: '50% 52%' },
+    { image: momentsImage, position: '50% 68%' },
+    { image: footerImage, position: '50% 34%' },
+];
+
+const heroSlides = [
+    {
+        image: footerImage,
+        kicker: 'Stara Women Awards 2026',
+        title: 'Muslim Stara Women Awards',
+        accent: 'Celebrate Her.',
+        body: 'Honoring Muslim women in leadership, business, creativity, education, and community impact.',
+        secondaryCta: { to: '/nominees', label: 'Nominate Her' },
+    },
+    {
+        image: heroOne,
+        kicker: 'Women of Impact',
+        title: 'Bold Women',
+        accent: 'Bright Futures.',
+        body: 'A platform for visibility, recognition, and new opportunities.',
+        secondaryCta: { to: '/about', label: 'Explore the Awards' },
+    },
+    {
+        image: eventImage,
+        kicker: 'Recognition Night',
+        title: 'A Night to Honor',
+        accent: 'Real Impact.',
+        body: 'Join partners, sponsors, and the community as we celebrate excellence.',
+        secondaryCta: { to: '/tickets', label: 'Get Tickets' },
+    },
+];
+
+const partners = [
+    { name: 'Aman', tone: '#f2a21b', icon: 'fa-diamond' },
+    { name: 'Premium', tone: '#0099bf', icon: 'fa-building-columns' },
+    { name: 'Zainab', tone: '#d92ba6', icon: 'fa-spa' },
+    { name: 'ILM Media', tone: '#c88719', icon: 'fa-broadcast-tower' },
+    { name: 'Sisters', tone: '#ec2e90', icon: 'fa-people-roof' },
+    { name: 'Safa Tours', tone: '#178f5f', icon: 'fa-route' },
+];
 
 export const HomePage = () => {
     const [loading, setLoading] = useState(true);
-    const [currentSlide, setCurrentSlide] = useState(0);
+    const [activeSlide, setActiveSlide] = useState(0);
 
-    // Data ya Picha za Slider (Placeholder URLs)
-    const slides = [
-        {
-            image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop",
-            title: "Recognizing Business Excellence",
-            subtitle: "An exclusive platform to celebrate business achievements."
-        },
-        {
-            image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop",
-            title: "A Night of Prestigious Awards",
-            subtitle: "Join industry leaders for a golden night of celebration."
-        },
-        {
-            image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop",
-            title: "Build Your Network",
-            subtitle: "A prime opportunity to meet investors and innovators."
-        }
-    ];
-
-    // Simulizi ya Loading
     useEffect(() => {
-        const timer = setTimeout(() => setLoading(false), 2500);
+        const timer = setTimeout(() => setLoading(false), 700);
         return () => clearTimeout(timer);
     }, []);
 
-    // Slider Logic
     useEffect(() => {
-        const slideInterval = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % slides.length);
-        }, 5000);
-        return () => clearInterval(slideInterval);
-    }, [slides.length]);
+        const timer = setInterval(() => {
+            setActiveSlide((current) => (current + 1) % heroSlides.length);
+        }, 8000);
+
+        return () => clearInterval(timer);
+    }, []);
 
     if (loading) {
         return <PageLoader />;
     }
 
-    return (
-        <>
-            
-            {/* --- Hero Section with Sliding Images --- */}
-            <section className="hero-slider-container">
-                {slides.map((slide, index) => (
-                    <img
-                        key={index}
-                        src={slide.image}
-                        alt="Hero Slide"
-                        className={`hero-slide-image ${index === currentSlide ? 'active' : ''}`}
-                    />
-                ))}
+    const slide = heroSlides[activeSlide];
 
-                <div className="hero-content-overlay">
-                    <span className="eyebrow hero-text-anim" key={`eyebrow-${currentSlide}`}>
-                        Business Excellence Awards 2026
-                    </span>
-                    <h1 className="hero-text-anim" style={{ fontSize: '3.5rem', maxWidth: '800px', margin: '1rem 0' }} key={`title-${currentSlide}`}>
-                        {slides[currentSlide].title}
+    return (
+        <div className="mswa-home mswa-pink-home">
+            <section className="mswa-hero section">
+                <div className="hero-copy-content">
+                    <span className="eyebrow">{slide.kicker}</span>
+                    <h1>
+                        {slide.title} <span>{slide.accent}</span>
                     </h1>
-                    <p className="hero-text-anim" style={{ fontSize: '1.2rem', color: 'var(--muted)', maxWidth: '600px', marginBottom: '2rem' }} key={`sub-${currentSlide}`}>
-                        {slides[currentSlide].subtitle}
-                    </p>
-                    <div className="hero-actions hero-text-anim" key={`actions-${currentSlide}`}>
-                        <button className="btn btn-gold">Nominate a Winner</button>
-                        <button className="btn btn-ghost">View Categories</button>
+                    <p>{slide.body}</p>
+                    <div className="hero-actions">
+                        <Link to="/voting" className="btn btn-primary">Vote Now</Link>
+                        <Link to={slide.secondaryCta.to} className="btn btn-outline">
+                            {slide.secondaryCta.label}
+                            <i className="fas fa-arrow-right" aria-hidden="true" />
+                        </Link>
+                    </div>
+                    <div className="hero-slide-dots" aria-label="Hero slides">
+                        {heroSlides.map((item, index) => (
+                            <button
+                                key={item.title}
+                                type="button"
+                                className={index === activeSlide ? 'active' : ''}
+                                onClick={() => setActiveSlide(index)}
+                                aria-label={`Show slide ${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mswa-hero-visual" aria-label="Muslim Stara Women Awards celebration">
+                    <div className="hero-star" aria-hidden="true"></div>
+                    <img key={slide.image} src={slide.image} alt="Muslim women awards celebration" />
+                    <div className="hero-award-badge">
+                        <i className="fas fa-star-and-crescent" aria-hidden="true" />
+                        <span>Muslim Stara Women Awards</span>
                     </div>
                 </div>
             </section>
 
-            {/* --- Countdown Section --- */}
-            <Countdown date="2026-10-24T19:00:00" />
-
-            {/* --- Categories Section --- */}
-            <section className="section">
-                <div className="section-title">
-                    <span className="eyebrow">The Awards</span>
-                    <h2>Award Categories</h2>
+            <section className="mswa-about section">
+                <div className="about-copy">
+                    <span className="eyebrow">About the Awards</span>
+                    <h2>
+                        Empowering Women. Celebrating <span>Excellence.</span>
+                    </h2>
+                    <p>
+                        Stara Women Awards 2026 recognizes Muslim women making a meaningful
+                        difference in community, business, leadership, creativity, and education.
+                        The platform creates visibility, confidence, and new opportunities.
+                    </p>
+                    <div className="about-points">
+                        {impactPillars.map((point) => (
+                            <div className="about-point" key={point.title}>
+                                <i className={`fas ${point.icon}`} aria-hidden="true" />
+                                <div>
+                                    <strong>{point.title}</strong>
+                                    <p>{point.body}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="about-actions">
+                        <Link to="/categories" className="btn btn-primary">Discover More</Link>
+                    </div>
                 </div>
-                <CategoriesSlider />
+                <div className="about-visual">
+                    <img src={aboutImage} alt="Muslim Stara Women Awards about section" />
+                </div>
             </section>
 
-            {/* --- Sponsors Section --- */}
-            <section className="section sponsors-section">
-                <div className="section-title" style={{ textAlign: 'center', margin: '0 auto 2rem auto' }}>
-                    <span className="eyebrow">Our Partners</span>
-                    <h2>Esteemed Sponsors</h2>
+            <section className="mswa-categories section">
+                <div className="section-heading">
+                    <span className="eyebrow">Award Categories</span>
+                    <h2>Honoring Excellence in Every Field</h2>
+                    <p>
+                        Celebrating Muslim women shaping communities through leadership,
+                        enterprise, education, creativity, service, and vision.
+                    </p>
                 </div>
-                <div className="sponsors-grid">
-                    {['forbes', 'cocacola', 'google', 'microsoft', 'samsung', 'toyota'].map(name => (
-                        <div key={name} className="sponsor-logo">
-                            <img src={`https://logo.clearbit.com/${name}.com`} alt={`${name} logo`} />
+                <div className="categories-grid">
+                    {categories.map((category) => (
+                        <article className="category-card" key={category.title}>
+                            <i className={`fas ${category.icon}`} aria-hidden="true" />
+                            <h3>{category.title}</h3>
+                            <p>{category.body}</p>
+                        </article>
+                    ))}
+                </div>
+                <div className="section-action">
+                    <Link to="/categories" className="btn btn-outline">View All Categories</Link>
+                </div>
+            </section>
+
+            <section className="mswa-save-date section" id="location">
+                <div className="save-date-visual">
+                    <img src={eventImage} alt="Muslim Stara Women Awards gala event" />
+                </div>
+                <div className="save-date-copy">
+                    <span className="eyebrow">Save the Date</span>
+                    <h2>The Biggest Night of Recognition & Inspiration</h2>
+                    <div className="event-meta">
+                        <span><i className="fas fa-calendar-days" aria-hidden="true" />15th November 2026</span>
+                        <span><i className="fas fa-clock" aria-hidden="true" />Saturday, 6:00 PM - 11:00 PM</span>
+                        <span><i className="fas fa-location-dot" aria-hidden="true" />Grand Palace Convention Center, Dar es Salaam</span>
+                        <a href={whatsappOwner} target="_blank" rel="noreferrer">
+                            <i className="fab fa-whatsapp" aria-hidden="true" />{ownerPhone.replace('+255', '+255 ')}
+                        </a>
+                    </div>
+                    <div className="countdown-wrap">
+                        <Countdown date="2026-11-15T18:00:00" />
+                    </div>
+                    <Link to="/tickets" className="btn btn-primary">Get Your Tickets</Link>
+                </div>
+                <div className="venue-map">
+                    <iframe
+                        title="Grand Palace Convention Center map"
+                        src="https://www.google.com/maps?q=Grand%20Palace%20Convention%20Center%20Dar%20es%20Salaam%20Tanzania&output=embed"
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                    />
+                </div>
+            </section>
+
+            <section className="mswa-video-section section">
+                <div className="video-showcase">
+                    <div className="video-poster">
+                        <img src={categoriesImage} alt="Muslim Stara Women Awards video preview" />
+                        <a
+                            className="play-ripple"
+                            href="https://www.instagram.com/muslim_stara_women_awards?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label="Play Muslim Stara Women Awards video"
+                        >
+                            <i className="fas fa-play" aria-hidden="true" />
+                        </a>
+                    </div>
+                    <div className="video-copy">
+                        <span className="eyebrow">Watch the Story</span>
+                        <h2>Feel the Spirit of Stara Women Awards</h2>
+                        <p>
+                            Watch highlights, reels, and campaign moments celebrating women
+                            with purpose, courage, and community impact.
+                        </p>
+                        <div className="video-links">
+                            <a href="https://www.youtube.com/results?search_query=Muslim+Stara+Women+Awards" target="_blank" rel="noreferrer">
+                                <i className="fab fa-youtube" aria-hidden="true" /> YouTube Videos
+                            </a>
+                            <a href="https://www.instagram.com/muslim_stara_women_awards?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noreferrer">
+                                <i className="fab fa-instagram" aria-hidden="true" /> Instagram Reels
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="mswa-gallery-preview section">
+                <div className="section-heading">
+                    <span className="eyebrow">Our Moments</span>
+                    <h2>Glimpses of Inspiration</h2>
+                </div>
+                <div className="gallery-grid">
+                    {gallery.map((item, index) => (
+                        <article className="gallery-card" key={`${item.position}-${index}`}>
+                            <img
+                                src={item.image}
+                                alt={`Muslim Stara Women Awards moment ${index + 1}`}
+                                style={{ objectPosition: item.position }}
+                            />
+                        </article>
+                    ))}
+                </div>
+                <div className="section-action">
+                    <Link to="/gallery" className="btn btn-outline">View Gallery</Link>
+                </div>
+            </section>
+
+            <section className="mswa-partners section">
+                <div className="section-heading">
+                    <span className="eyebrow">Our Partners</span>
+                    <h2>Proudly Supported by</h2>
+                </div>
+                <div className="partner-logos">
+                    {[...partners, ...partners].map((partner, index) => (
+                        <div
+                            className="partner-logo"
+                            key={`${partner.name}-${index}`}
+                            style={{ '--partner-tone': partner.tone }}
+                            aria-hidden={index >= partners.length ? 'true' : undefined}
+                        >
+                            <i className={`fas ${partner.icon}`} aria-hidden="true" />
+                            <span>{partner.name}</span>
                         </div>
                     ))}
                 </div>
             </section>
-
-            {/* --- Updates Section --- */}
-            <section className="section">
-                <div className="section-title">
-                    <span className="eyebrow">Stay Informed</span>
-                    <h2>Latest Updates</h2>
-                </div>
-                <div className="grid-three">
-                    <div className="card">
-                        <h4>Nominations Now Open</h4>
-                        <p className="text-muted">The nomination period for the 2026 Business Awards has officially begun. Submit your entries before the deadline.</p>
-                        <Link to="/nominees" className="text-gold font-bold mt-4 inline-block">Learn More &rarr;</Link>
-                    </div>
-                    <div className="card">
-                        <h4>Gala Night Venue Announced</h4>
-                        <p className="text-muted">We are thrilled to announce that this year's gala will be held at the prestigious Grand Hyatt Convention Center.</p>
-                        <Link to="/#location" className="text-gold font-bold mt-4 inline-block">View Venue &rarr;</Link>
-                    </div>
-                    <div className="card">
-                        <h4>Keynote Speaker Revealed</h4>
-                        <p className="text-muted">Internationally acclaimed entrepreneur, Jane Doe, will be our guest of honor and keynote speaker.</p>
-                        <Link to="/about" className="text-gold font-bold mt-4 inline-block">About the Speaker &rarr;</Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* --- Reels Section --- */}
-            <section className="section reels-section">
-                <div className="section-title" style={{ textAlign: 'center', margin: '0 auto 2rem auto' }}>
-                    <span className="eyebrow">Quick Highlights</span>
-                    <h2>Event Reels</h2>
-                </div>
-                <ReelsSlider />
-            </section>
-
-            {/* --- Testimonials Section --- */}
-            <section className="section testimonial-section">
-                <div className="section-title" style={{ textAlign: 'center', margin: '0 auto 2rem auto' }}>
-                    <span className="eyebrow">Voices of Success</span>
-                    <h2>What Our Winners Say</h2>
-                </div>
-                <div className="testimonial-slider">
-                    <div className="testimonial-card">
-                        <p>"Winning the 'Innovator of the Year' award was a pivotal moment for our company. The recognition and networking opportunities have been invaluable."</p>
-                        <footer>
-                            <strong>John Smith</strong>, CEO of TechCorp (2025 Winner)
-                        </footer>
-                    </div>
-                    <div className="testimonial-card">
-                        <p>"The entire awards process was seamless and professional. It gave our team a huge morale boost and validated all our hard work."</p>
-                        <footer>
-                            <strong>Emily White</strong>, Founder of Creative Solutions (2025 Winner)
-                        </footer>
-                    </div>
-                </div>
-            </section>
-
-            {/* --- Gallery Section --- */}
-            <section className="section">
-                <div className="section-title">
-                    <span className="eyebrow">Moments of Glory</span>
-                    <h2>Event Gallery</h2>
-                </div>
-                <GallerySlider />
-                <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                    <Link to="/gallery" className="btn btn-outline">View Full Gallery</Link>
-                </div>
-            </section>
-
-            {/* --- Location & Map Section --- */}
-            <section id="location" className="section location-section">
-                <div className="section-title">
-                    <span className="eyebrow">Join Us</span>
-                    <h2>Event Venue & Location</h2>
-                </div>
-                <div className="card">
-                    <div className="split">
-                        <div>
-                            <h3>Grand Hyatt Convention Center</h3>
-                            <p className="text-muted">123 Luxury Avenue, Business City, 10101</p>
-                            <p>The awards ceremony will take place in the main ballroom. Doors open at 6:00 PM for a cocktail reception, followed by the main event at 7:00 PM.</p>
-                            <div className="mt-8">
-                                <Link to="/tickets" className="btn btn-gold">Get Your Tickets</Link>
-                            </div>
-                        </div>
-                        <div className="map-container">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019494759436!2d144.9537353159042!3d-37.8200113423125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0x5045675218ce7e0!2sMelbourne%20Convention%20and%20Exhibition%20Centre!5e0!3m2!1sen!2sau!4v1629861630385!5m2!1sen!2sau"
-                                width="100%"
-                                height="350"
-                                style={{ border: 0 }}
-                                allowFullScreen=""
-                                loading="lazy"
-                                title="Event Location Map"
-                            ></iframe>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </>
+        </div>
     );
 };
 
 const Countdown = ({ date }) => {
     const calculateTimeLeft = () => {
         const difference = +new Date(date) - +new Date();
-        let timeLeft = {};
 
-        if (difference > 0) {
-            timeLeft = {
-                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                minutes: Math.floor((difference / 1000 / 60) % 60),
-                seconds: Math.floor((difference / 1000) % 60),
-            };
+        if (difference <= 0) {
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
         }
-        return timeLeft;
+
+        return {
+            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((difference / 1000 / 60) % 60),
+            seconds: Math.floor((difference / 1000) % 60),
+        };
     };
 
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
     useEffect(() => {
-        const timer = setTimeout(() => {
+        const timer = setInterval(() => {
             setTimeLeft(calculateTimeLeft());
         }, 1000);
-        return () => clearTimeout(timer);
-    });
+
+        return () => clearInterval(timer);
+    }, [date]);
 
     return (
-        <section className="section countdown-section">
-            <div className="countdown-grid">
-                <div className="countdown-item"><span>{timeLeft.days || '0'}</span>Days</div>
-                <div className="countdown-item"><span>{timeLeft.hours || '0'}</span>Hours</div>
-                <div className="countdown-item"><span>{timeLeft.minutes || '0'}</span>Minutes</div>
-                <div className="countdown-item"><span>{timeLeft.seconds || '0'}</span>Seconds</div>
-            </div>
-        </section>
-    );
-};
-
-const CategoriesSlider = () => {
-    const categories = [
-        { name: 'Innovator of the Year', icon: 'fa-lightbulb' },
-        { name: 'Best Tech Startup', icon: 'fa-rocket' },
-        { name: 'Excellence in Customer Service', icon: 'fa-heart' },
-        { name: 'Sustainable Business Award', icon: 'fa-leaf' },
-        { name: 'Community Impact Award', icon: 'fa-users' },
-        { name: 'Digital Transformation Leader', icon: 'fa-laptop-code' },
-    ];
-    return (
-        <div className="category-slider-container">
-            <div className="category-slider">
-                {categories.map(cat => (
-                    <div key={cat.name} className="category-slide-card">
-                        <i className={`fas ${cat.icon}`}></i>
-                        <h4>{cat.name}</h4>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
-
-const ReelsSlider = () => {
-    const reels = [
-        {
-            image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80',
-            title: 'Red Carpet Arrival',
-            tag: 'Gala Night',
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=900&q=80',
-            title: 'Winner Reactions',
-            tag: 'Live Moments',
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80',
-            title: 'Audience Energy',
-            tag: 'Behind The Scenes',
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=900&q=80',
-            title: 'Spotlight Highlights',
-            tag: 'Top Performances',
-        },
-    ];
-
-    const [activeReel, setActiveReel] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveReel((prev) => (prev + 1) % reels.length);
-        }, 4500);
-
-        return () => clearInterval(interval);
-    }, [reels.length]);
-
-    const goToPrevious = () => {
-        setActiveReel((prev) => (prev - 1 + reels.length) % reels.length);
-    };
-
-    const goToNext = () => {
-        setActiveReel((prev) => (prev + 1) % reels.length);
-    };
-
-    return (
-        <div className="reels-carousel">
-            <div className="reels-viewport">
-                <div
-                    className="reels-track"
-                    style={{ transform: `translateX(-${activeReel * 100}%)` }}
-                >
-                    {reels.map((reel) => (
-                        <article key={reel.title} className="reel-slide">
-                            <div className="reel-item">
-                                <img src={reel.image} alt={reel.title} />
-                                <div className="reel-play-icon">
-                                    <i className="fas fa-play"></i>
-                                </div>
-                            </div>
-                            <div className="reel-copy">
-                                <span className="reel-tag">{reel.tag}</span>
-                                <h3>{reel.title}</h3>
-                            </div>
-                        </article>
-                    ))}
-                </div>
-            </div>
-
-            <div className="reels-controls">
-                <button type="button" className="reels-arrow" onClick={goToPrevious} aria-label="Previous reel">
-                    <i className="fas fa-arrow-left"></i>
-                </button>
-                <div className="reels-dots" aria-label="Reel navigation">
-                    {reels.map((reel, index) => (
-                        <button
-                            key={reel.title}
-                            type="button"
-                            className={`reels-dot ${index === activeReel ? 'active' : ''}`}
-                            onClick={() => setActiveReel(index)}
-                            aria-label={`View ${reel.title}`}
-                        />
-                    ))}
-                </div>
-                <button type="button" className="reels-arrow" onClick={goToNext} aria-label="Next reel">
-                    <i className="fas fa-arrow-right"></i>
-                </button>
-            </div>
-        </div>
-    );
-};
-
-const GallerySlider = () => {
-    const galleryItems = [
-        {
-            image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80',
-            title: 'Awards Night Entrance',
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80',
-            title: 'VIP Reception Moments',
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=80',
-            title: 'Winners On Stage',
-        },
-        {
-            image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&w=1200&q=80',
-            title: 'Audience Celebration',
-        },
-    ];
-
-    const [activeGalleryItem, setActiveGalleryItem] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setActiveGalleryItem((prev) => (prev + 1) % galleryItems.length);
-        }, 5000);
-
-        return () => clearInterval(interval);
-    }, [galleryItems.length]);
-
-    const goToPrevious = () => {
-        setActiveGalleryItem((prev) => (prev - 1 + galleryItems.length) % galleryItems.length);
-    };
-
-    const goToNext = () => {
-        setActiveGalleryItem((prev) => (prev + 1) % galleryItems.length);
-    };
-
-    return (
-        <div className="gallery-carousel">
-            <div className="gallery-viewport">
-                <div
-                    className="gallery-track"
-                    style={{ transform: `translateX(-${activeGalleryItem * 100}%)` }}
-                >
-                    {galleryItems.map((item) => (
-                        <article key={item.title} className="gallery-slide">
-                            <div className="gallery-item">
-                                <img src={item.image} alt={item.title} />
-                            </div>
-                            <div className="gallery-caption">
-                                <span className="gallery-count">
-                                    {String(activeGalleryItem + 1).padStart(2, '0')} / {String(galleryItems.length).padStart(2, '0')}
-                                </span>
-                                <h3>{item.title}</h3>
-                            </div>
-                        </article>
-                    ))}
-                </div>
-            </div>
-
-            <div className="gallery-controls">
-                <button type="button" className="gallery-arrow" onClick={goToPrevious} aria-label="Previous gallery image">
-                    <i className="fas fa-arrow-left"></i>
-                </button>
-                <div className="gallery-dots" aria-label="Gallery navigation">
-                    {galleryItems.map((item, index) => (
-                        <button
-                            key={item.title}
-                            type="button"
-                            className={`gallery-dot ${index === activeGalleryItem ? 'active' : ''}`}
-                            onClick={() => setActiveGalleryItem(index)}
-                            aria-label={`View ${item.title}`}
-                        />
-                    ))}
-                </div>
-                <button type="button" className="gallery-arrow" onClick={goToNext} aria-label="Next gallery image">
-                    <i className="fas fa-arrow-right"></i>
-                </button>
-            </div>
+        <div className="countdown-grid">
+            <div className="countdown-item"><span>{timeLeft.days}</span>Days</div>
+            <div className="countdown-item"><span>{timeLeft.hours}</span>Hours</div>
+            <div className="countdown-item"><span>{timeLeft.minutes}</span>Minutes</div>
+            <div className="countdown-item"><span>{timeLeft.seconds}</span>Seconds</div>
         </div>
     );
 };

@@ -42,9 +42,5 @@ export const getLandingPath = (user) => {
         return '/admin/reports';
     }
 
-    if (roles.includes('sponsor')) {
-        return '/sponsors';
-    }
-
-    return '/';
+    return '/dashboard';
 };

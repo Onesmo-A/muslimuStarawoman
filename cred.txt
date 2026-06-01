@@ -1,0 +1,8 @@
+Password for all accounts: Password@123
+
+superadmin@mswa.test  | super_admin
+admin@mswa.test       | admin
+judge@mswa.test       | judge
+sponsor@mswa.test     | sponsor
+nominee@mswa.test     | nominee
+user@mswa.test        | public_user

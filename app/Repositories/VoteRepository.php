@@ -20,6 +20,19 @@ class VoteRepository
         return Vote::query()->where('ip_address', $ipAddress)->where('award_category_id', $categoryId)->count();
     }
 
+    public function fingerprintVoteCountByCategory(?string $fingerprintHash, int $categoryId): int
+    {
+        if (! $fingerprintHash) {
+            return 0;
+        }
+
+        return Vote::query()
+            ->where('fingerprint_hash', $fingerprintHash)
+            ->where('award_category_id', $categoryId)
+            ->where('status', 'valid')
+            ->count();
+    }
+
     public function create(array $payload): Vote
     {
         return Vote::query()->create($payload);

@@ -11,6 +11,7 @@ use App\Models\Post;
 use App\Models\Sponsor;
 use App\Models\Winner;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 
 class ContentController extends BaseApiController
 {
@@ -23,7 +24,9 @@ class ContentController extends BaseApiController
                     'upcoming_events' => Event::query()->where('status', 'published')->whereDate('event_date', '>=', now())->count(),
                     'nominees' => Nominee::query()->count(),
                 ],
-                'winners_spotlight' => Winner::query()->where('is_published', true)->latest()->take(6)->get(),
+                'winners_spotlight' => Schema::hasTable('winners')
+                    ? Winner::query()->where('is_published', true)->latest()->take(6)->get()
+                    : collect(),
             ];
         });
 
@@ -41,7 +44,15 @@ class ContentController extends BaseApiController
 
     public function nominees()
     {
-        return $this->successResponse(Nominee::query()->where('status', 'active')->get(), 'Nominees list');
+        return $this->successResponse(
+            Nominee::query()
+                ->with('category:id,name')
+                ->withCount(['votes' => fn ($query) => $query->where('status', 'valid')])
+                ->where('status', 'active')
+                ->latest()
+                ->get(),
+            'Nominees list'
+        );
     }
 
     public function sponsors()
